@@ -10,66 +10,94 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 2,
-      color: Color(int.parse(task.color)).withOpacity(0.9),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(8),
-        onLongPress: () => _showEditTaskDialog(context, task),
-        title: Text(
-          task.title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-        ),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 4),
-            Text(task.description),
-            const SizedBox(height: 4),
-            Row(
-              children: [
-                const Icon(Icons.calendar_today, size: 16),
-                const SizedBox(width: 4),
-                Text(
-                  'Deadline: ${task.datelineDate.toLocal().toString().split(" ")[0]}',
-                  style: const TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ],
+    return Dismissible(
+      key: Key(task.id),
+      direction: DismissDirection.startToEnd,
+      background: Container(
+        color: Colors.red,
+        alignment: Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: Icon(Icons.delete, color: Colors.white),
+      ),
+      onDismissed: (direction) {
+        context.read<TaskCubit>().deleteTask(task.id);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Đã xóa công việc "${task.title}"'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                context.read<TaskCubit>().deleteTask(task.id);
+              },
             ),
-          ],
-        ),
-        trailing: DropdownButton<TaskStatus>(
-          value: task.status,
-          underline: const SizedBox(),
-          onChanged: (newStatus) {
-            if (newStatus != null) {
-              context.read<TaskCubit>().updateStatus(task.id, newStatus);
-            }
-          },
-          items:
-              TaskStatus.values.map((status) {
-                return DropdownMenuItem(
-                  value: status,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(
-                        _getStatusIcon(status),
-                        color: _getStatusColor(status),
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _getStatusText(status),
-                        style: TextStyle(
-                          color: _getStatusColor(status),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
+          ),
+        );
+      },
+      child: Card(
+        elevation: 2,
+        color: Color(int.parse(task.color)).withOpacity(0.9),
+        child: ListTile(
+          contentPadding: const EdgeInsets.all(8),
+          onLongPress: () => _showEditTaskDialog(context, task),
+          title: Text(
+            task.title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 4),
+              Text(task.description),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  const Icon(Icons.calendar_today, size: 16),
+                  const SizedBox(width: 4),
+                  Text(
+                    'Deadline: ${task.datelineDate.toLocal().toString().split(" ")[0]}',
+                    style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
-                );
-              }).toList(),
+                ],
+              ),
+            ],
+          ),
+          trailing: DropdownButton<TaskStatus>(
+            value: task.status,
+            underline: const SizedBox(),
+            onChanged: (newStatus) {
+              if (newStatus != null) {
+                context.read<TaskCubit>().updateStatus(task.id, newStatus);
+              }
+            },
+            items:
+                TaskStatus.values.map((status) {
+                  return DropdownMenuItem(
+                    value: status,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          _getStatusIcon(status),
+                          color: _getStatusColor(status),
+                          size: 16,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          _getStatusText(status),
+                          style: TextStyle(
+                            color: _getStatusColor(status),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+          ),
+          leading: CircleAvatar(
+            backgroundColor: Color(int.parse(task.color)),
+            child: Icon(Icons.task, color: Colors.white),
+          ),
         ),
       ),
     );
@@ -154,6 +182,7 @@ class TaskItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         TextField(
+                          autofocus: true,
                           controller: titleController,
                           decoration: const InputDecoration(
                             labelText: 'Tiêu đề',

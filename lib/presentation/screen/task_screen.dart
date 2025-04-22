@@ -90,6 +90,7 @@ void _showAddTaskDialog(BuildContext context) {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       TextField(
+                        autofocus: true,
                         controller: titleController,
                         decoration: const InputDecoration(
                           labelText: 'Tiêu đề',
@@ -146,7 +147,7 @@ void _showAddTaskDialog(BuildContext context) {
                       ),
                       const SizedBox(height: 8),
                       Wrap(
-                        spacing: 8,
+                        spacing: 6,
                         children: [
                           _colorChoice('0xFF2196F3', selectedColor, (color) {
                             setState(() => selectedColor = color);

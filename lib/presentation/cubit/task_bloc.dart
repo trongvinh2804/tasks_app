@@ -56,6 +56,14 @@ class TaskCubit extends Cubit<TaskState> {
     await taskStore.saveTasks(updatedTasks);
   }
 
+  // xoa task
+  Future<void> deleteTask(String taskId) async {
+    final updatedTasks =
+        state.tasks.where((task) => task.id != taskId).toList();
+    emit(state.copyWith(tasks: updatedTasks));
+    await taskStore.saveTasks(updatedTasks);
+  }
+
   // sữa cái task
   Future<void> updateTask({
     required String taskId,
