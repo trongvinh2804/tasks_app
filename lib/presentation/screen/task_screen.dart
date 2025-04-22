@@ -79,7 +79,7 @@ class TaskScreen extends StatelessWidget {
                     children: [
                       Icon(Icons.task_alt),
                       SizedBox(width: 4),
-                      Text("Hoàn tất"),
+                      Text("Xong"),
                     ],
                   ),
                 ),

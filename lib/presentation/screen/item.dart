@@ -40,45 +40,6 @@ class TaskItem extends StatelessWidget {
     );
   }
 
-  Widget _buildSubtitle(BuildContext context) {
-    final deadlineText = task.datelineDate.toLocal().toString().split(" ")[0];
-    final truncatedDesc =
-        task.description.length > 30
-            ? '${task.description.substring(0, 10)}...'
-            : task.description;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 4),
-        InkWell(
-          onTap: () => _showDescriptionDialog(context),
-          child: Text(
-            truncatedDesc,
-            style: const TextStyle(color: Colors.black87, fontSize: 14),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Row(
-          children: [
-            const Icon(Icons.calendar_today, size: 16),
-            const SizedBox(width: 4),
-            Text(
-              'Deadline: $deadlineText',
-              style: const TextStyle(
-                fontStyle: FontStyle.italic,
-                fontSize: 12,
-                shadows: [Shadow(offset: Offset(0.5, 0.5), blurRadius: 1)],
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   void _showDescriptionDialog(BuildContext context) {
     showDialog(
       context: context,

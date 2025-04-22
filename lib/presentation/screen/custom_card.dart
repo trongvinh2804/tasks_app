@@ -22,7 +22,7 @@ class CustomTaskCard extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 50,
+              width: 80,
               decoration: BoxDecoration(
                 color: Colors.black87,
                 borderRadius: const BorderRadius.only(
@@ -60,33 +60,35 @@ class CustomTaskCard extends StatelessWidget {
                   ),
                 ),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 24),
-                      child: Text(
-                        task.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [trailing],
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            task.title,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ),
+                        trailing,
+                      ],
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      task.description,
-                      style: const TextStyle(
-                        color: Colors.black54,
-                        fontSize: 14,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        task.description,
+                        style: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 14,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
@@ -100,18 +102,18 @@ class CustomTaskCard extends StatelessWidget {
 
   String _getMonthAbbreviation(int month) {
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      'Tháng 1',
+      'Tháng 2',
+      'Tháng 3',
+      'Tháng 4',
+      'Tháng 5',
+      'tháng 6',
+      'Tháng 7',
+      'Tháng 8',
+      'Tháng 9',
+      'Tháng 10',
+      'Tháng 11',
+      'Tháng 12',
     ];
     return months[month - 1];
   }

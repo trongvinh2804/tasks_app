@@ -28,7 +28,7 @@ class DescriptionDialog extends StatelessWidget {
             children: [
               const Icon(Icons.calendar_today, size: 16),
               const SizedBox(width: 8),
-              Text('Deadline: $deadline'),
+              Text('Hạn cuối: $deadline'),
             ],
           ),
         ],

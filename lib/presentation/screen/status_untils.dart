@@ -7,7 +7,7 @@ class StatusUtils {
       case TaskStatus.newtask:
         return Colors.black;
       case TaskStatus.inprogress:
-        return Colors.orange;
+        return Colors.redAccent;
       case TaskStatus.done:
         return Colors.indigo;
     }
