@@ -1,4 +1,5 @@
 // ignore: depend_on_referenced_packages
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
@@ -64,6 +65,29 @@ class TaskCubit extends Cubit<TaskState> {
     await taskStore.saveTasks(updatedTasks);
   }
 
+  // tìm kiếm task
+  Future<void> searchTask(String searchText) async {
+    if (searchText.isEmpty) {
+      emit(
+        state.copyWith(
+          tasks: await taskStore.getTasks(),
+          searchText: searchText,
+        ),
+      );
+      return;
+    }
+
+    final allTasks = await taskStore.getTasks(); // Lấy tất cả tasks từ storage
+    final filteredTasks =
+        allTasks.where((task) {
+          return task.title.toLowerCase().contains(searchText.toLowerCase()) ||
+              task.description.toLowerCase().contains(searchText.toLowerCase());
+        }).toList();
+
+    filteredTasks.sort((a, b) => b.priority.index.compareTo(a.priority.index));
+    emit(state.copyWith(tasks: filteredTasks, searchText: searchText));
+  }
+
   // sữa cái task
   Future<void> updateTask({
     required String taskId,
@@ -90,6 +114,19 @@ class TaskCubit extends Cubit<TaskState> {
 
     emit(state.copyWith(tasks: updatedTasks));
     await taskStore.saveTasks(updatedTasks);
+  }
+
+  Future<DateTime?> selectDate(
+    BuildContext context,
+    DateTime initialDate,
+  ) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+    );
+    return picked;
   }
 
   void setSearchText(String text) {

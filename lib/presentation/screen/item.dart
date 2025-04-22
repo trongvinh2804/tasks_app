@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo_app/presentation/screen/all_desc.dart';
+import 'package:todo_app/presentation/screen/custom_card.dart';
+import 'package:todo_app/presentation/screen/edit_dailog.dart';
+import 'package:todo_app/presentation/screen/status_untils.dart';
 import '../../domain/entity_task.dart';
 import '../cubit/task_bloc.dart';
 
@@ -7,7 +11,6 @@ class TaskItem extends StatelessWidget {
   final Task task;
 
   const TaskItem({super.key, required this.task});
-
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -16,280 +19,127 @@ class TaskItem extends StatelessWidget {
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Icon(Icons.delete, color: Colors.white),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: const Icon(Icons.delete, color: Colors.white),
       ),
       onDismissed: (direction) {
         context.read<TaskCubit>().deleteTask(task.id);
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Đã xóa công việc "${task.title}"'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                context.read<TaskCubit>().deleteTask(task.id);
-              },
-            ),
-          ),
+          SnackBar(content: Text('Đã xóa công việc "${task.title}"')),
         );
       },
-      child: Card(
-        elevation: 2,
-        color: Color(int.parse(task.color)).withOpacity(0.9),
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(8),
-          onLongPress: () => _showEditTaskDialog(context, task),
-          title: Text(
-            task.title,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      child: GestureDetector(
+        onLongPress: () => _showEditTaskDialog(context),
+        onTap: () => _showDescriptionDialog(context),
+        child: CustomTaskCard(
+          task: task,
+          onLongPress: () => _showEditTaskDialog(context),
+          trailing: _buildStatusDropdown(context),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSubtitle(BuildContext context) {
+    final deadlineText = task.datelineDate.toLocal().toString().split(" ")[0];
+    final truncatedDesc =
+        task.description.length > 30
+            ? '${task.description.substring(0, 10)}...'
+            : task.description;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 4),
+        InkWell(
+          onTap: () => _showDescriptionDialog(context),
+          child: Text(
+            truncatedDesc,
+            style: const TextStyle(color: Colors.black87, fontSize: 14),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 4),
-              Text(task.description),
-              const SizedBox(height: 4),
-              Row(
-                children: [
-                  const Icon(Icons.calendar_today, size: 16),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Deadline: ${task.datelineDate.toLocal().toString().split(" ")[0]}',
-                    style: const TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ],
+        ),
+        const SizedBox(height: 4),
+        Row(
+          children: [
+            const Icon(Icons.calendar_today, size: 16),
+            const SizedBox(width: 4),
+            Text(
+              'Deadline: $deadlineText',
+              style: const TextStyle(
+                fontStyle: FontStyle.italic,
+                fontSize: 12,
+                shadows: [Shadow(offset: Offset(0.5, 0.5), blurRadius: 1)],
               ),
-            ],
-          ),
-          trailing: DropdownButton<TaskStatus>(
-            value: task.status,
-            underline: const SizedBox(),
-            onChanged: (newStatus) {
-              if (newStatus != null) {
-                context.read<TaskCubit>().updateStatus(task.id, newStatus);
-              }
-            },
-            items:
-                TaskStatus.values.map((status) {
-                  return DropdownMenuItem(
-                    value: status,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          _getStatusIcon(status),
-                          color: _getStatusColor(status),
-                          size: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          _getStatusText(status),
-                          style: TextStyle(
-                            color: _getStatusColor(status),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-          ),
-          leading: CircleAvatar(
-            backgroundColor: Color(int.parse(task.color)),
-            child: Icon(Icons.task, color: Colors.white),
-          ),
+            ),
+          ],
         ),
-      ),
+      ],
     );
   }
 
-  // chọn màu cho cái task
-  Widget _colorChoice(
-    String color,
-    String selectedColor,
-    Function(String) onSelect,
-  ) {
-    return GestureDetector(
-      onTap: () => onSelect(color),
-      child: Container(
-        width: 32,
-        height: 32,
-        decoration: BoxDecoration(
-          color: Color(int.parse(color)),
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: color == selectedColor ? Colors.black : Colors.transparent,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-
-  // lấy cái màu
-  Color _getStatusColor(TaskStatus status) {
-    switch (status) {
-      case TaskStatus.newtask:
-        return Colors.black;
-      case TaskStatus.inprogress:
-        return Colors.orange;
-      case TaskStatus.done:
-        return Colors.indigo;
-    }
-  }
-
-  // lấy cái icon
-  IconData _getStatusIcon(TaskStatus status) {
-    switch (status) {
-      case TaskStatus.newtask:
-        return Icons.new_releases;
-      case TaskStatus.inprogress:
-        return Icons.pending_actions;
-      case TaskStatus.done:
-        return Icons.task_alt;
-    }
-  }
-
-  // lấy cái tên status
-  String _getStatusText(TaskStatus status) {
-    switch (status) {
-      case TaskStatus.newtask:
-        return "Mới";
-      case TaskStatus.inprogress:
-        return "Đang xử lý";
-      case TaskStatus.done:
-        return "Hoàn tất";
-    }
-  }
-
-  // show cái dialog sửa
-  void _showEditTaskDialog(BuildContext context, Task task) {
-    final titleController = TextEditingController(text: task.title);
-    final descriptionController = TextEditingController(text: task.description);
-    DateTime selectedDate = task.datelineDate;
-    String selectedColor = task.color;
-    TaskPriority selectedPriority = task.priority;
-
+  void _showDescriptionDialog(BuildContext context) {
     showDialog(
       context: context,
       builder:
-          (context) => StatefulBuilder(
-            builder:
-                (context, setState) => AlertDialog(
-                  title: const Text('Chỉnh sửa công việc'),
-                  content: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextField(
-                          autofocus: true,
-                          controller: titleController,
-                          decoration: const InputDecoration(
-                            labelText: 'Tiêu đề',
-                            border: OutlineInputBorder(),
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextField(
-                          controller: descriptionController,
-                          decoration: const InputDecoration(
-                            labelText: 'Mô tả',
-                            border: OutlineInputBorder(),
-                          ),
-                          maxLines: 3,
-                        ),
-                        const SizedBox(height: 8),
-                        DropdownButtonFormField<TaskPriority>(
-                          value: selectedPriority,
-                          decoration: const InputDecoration(
-                            labelText: 'Độ ưu tiên',
-                            border: OutlineInputBorder(),
-                          ),
-                          onChanged: (value) {
-                            selectedPriority = value!;
-                          },
-                          items:
-                              TaskPriority.values.map((priority) {
-                                return DropdownMenuItem(
-                                  value: priority,
-                                  child: Text(priority.name),
-                                );
-                              }).toList(),
-                        ),
-                        const SizedBox(height: 8),
-                        ListTile(
-                          title: const Text('Chọn deadline'),
-                          subtitle: Text(
-                            '${selectedDate.day}/${selectedDate.month}/${selectedDate.year}',
-                          ),
-                          trailing: const Icon(Icons.calendar_today),
-                          onTap: () async {
-                            final DateTime? picked = await showDatePicker(
-                              context: context,
-                              initialDate: selectedDate,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime.now().add(
-                                const Duration(days: 365),
-                              ),
-                            );
-                            if (picked != null) {
-                              selectedDate = picked;
-                            }
-                          },
-                        ),
-                        const SizedBox(height: 8),
-                        Wrap(
-                          spacing: 8,
-                          children: [
-                            _colorChoice(
-                              '0xFF2196F3',
-                              selectedColor,
-                              (color) => selectedColor = color,
-                            ),
-                            _colorChoice(
-                              '0xFF4CAF50',
-                              selectedColor,
-                              (color) => selectedColor = color,
-                            ),
-                            _colorChoice(
-                              '0xFFFFC107',
-                              selectedColor,
-                              (color) => selectedColor = color,
-                            ),
-                            _colorChoice(
-                              '0xFFE91E63',
-                              selectedColor,
-                              (color) => selectedColor = color,
-                            ),
-                          ],
-                        ),
-                      ],
+          (context) => DescriptionDialog(
+            title: task.title,
+            description: task.description,
+            deadline: task.datelineDate.toLocal().toString().split(" ")[0],
+          ),
+    );
+  }
+
+  Widget _buildStatusDropdown(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(4)),
+      child: DropdownButton<TaskStatus>(
+        value: task.status,
+        underline: const SizedBox(),
+        dropdownColor: Colors.white,
+        icon: const Icon(Icons.arrow_drop_down),
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.bold,
+        ),
+        onChanged: (newStatus) {
+          if (newStatus != null) {
+            context.read<TaskCubit>().updateStatus(task.id, newStatus);
+          }
+        },
+        items:
+            TaskStatus.values.map((status) {
+              return DropdownMenuItem(
+                value: status,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      StatusUtils.getStatusIcon(status),
+                      color: StatusUtils.getStatusColor(status),
+                      size: 16,
                     ),
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: const Text('Hủy'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        if (titleController.text.isNotEmpty) {
-                          context.read<TaskCubit>().updateTask(
-                            taskId: task.id,
-                            title: titleController.text,
-                            description: descriptionController.text,
-                            priority: selectedPriority,
-                            color: selectedColor,
-                            deadlineDate: selectedDate,
-                          );
-                          Navigator.pop(context);
-                        }
-                      },
-                      child: const Text('Lưu'),
+                    const SizedBox(width: 4),
+                    Text(
+                      StatusUtils.getStatusText(status),
+                      style: TextStyle(
+                        color: StatusUtils.getStatusColor(status),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
                 ),
-          ),
+              );
+            }).toList(),
+      ),
+    );
+  }
+
+  void _showEditTaskDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => EditTaskDialog(task: task),
     );
   }
 }
