@@ -111,13 +111,10 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-          child: CustomButton(
-            onPressed: _handleEditTask,
-            text: 'Lưu',
-            width: double.infinity,
-          ),
+        CustomButton(
+          onPressed: _handleEditTask,
+          text: 'Lưu',
+          width: double.infinity,
         ),
       ],
     );

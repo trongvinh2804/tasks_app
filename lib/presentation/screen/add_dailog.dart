@@ -97,13 +97,10 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         ),
       ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
-          child: CustomButton(
-            text: "Thêm",
-            onPressed: _handleAddTask,
-            width: double.infinity,
-          ),
+        CustomButton(
+          text: "Thêm",
+          onPressed: _handleAddTask,
+          width: double.infinity,
         ),
       ],
     );

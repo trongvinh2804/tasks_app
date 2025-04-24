@@ -17,15 +17,18 @@ class ColorChoice extends StatelessWidget {
     return GestureDetector(
       onTap: () => onColorSelected(color),
       child: Container(
-        width: 32,
-        height: 32,
-        margin: const EdgeInsets.all(4),
+        width: 36,
+        height: 36,
+        margin: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           color: Color(int.parse(color)),
           shape: BoxShape.circle,
           border: Border.all(
-            color: color == selectedColor ? Colors.black : Colors.transparent,
-            width: 2,
+            color:
+                color == selectedColor
+                    ? Color.fromARGB(20, 60, 65, 65)
+                    : Colors.transparent,
+            width: 3,
           ),
         ),
       ),
