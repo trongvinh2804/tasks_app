@@ -20,7 +20,7 @@ class TaskScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: Padding(
-            padding: const EdgeInsets.only(left: 12),
+            padding: const EdgeInsets.only(left: 8),
             child: const Text(
               "TASK",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -93,8 +93,8 @@ class TaskScreen extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 24,
-                  right: 24,
+                  left: 16,
+                  right: 16,
                   top: 12,
                   bottom: 12,
                 ),
@@ -102,7 +102,6 @@ class TaskScreen extends StatelessWidget {
                   controller: TextEditingController(),
                   label: 'Tìm kiếm...',
                   prefixIcon: Icon(Icons.search),
-                  textCapitalization: TextCapitalization.sentences,
                   onChanged: (value) {
                     context.read<TaskCubit>().searchTask(value);
                   },

@@ -22,6 +22,7 @@ class CustomDropdown extends StatelessWidget {
         contentPadding: const EdgeInsets.only(),
         filled: true,
         fillColor: Colors.white,
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
       ),
       style: const TextStyle(fontSize: 14, color: Colors.black87),
       icon: const Icon(Icons.arrow_drop_down_circle_outlined),

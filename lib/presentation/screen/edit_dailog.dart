@@ -38,6 +38,7 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: const Text('Chỉnh sửa công việc'),
       content: SingleChildScrollView(
         child: Column(
@@ -110,13 +111,14 @@ class _EditTaskDialogState extends State<EditTaskDialog> {
         ),
       ),
       actions: [
-        CustomButton(
-          onPressed: () => Navigator.pop(context),
-          text: 'Hủy',
-          isPrimary: false,
-          width: 80,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
+          child: CustomButton(
+            onPressed: _handleEditTask,
+            text: 'Lưu',
+            width: double.infinity,
+          ),
         ),
-        CustomButton(onPressed: _handleEditTask, text: 'Lưu', width: 80),
       ],
     );
   }

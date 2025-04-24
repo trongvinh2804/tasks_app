@@ -13,29 +13,13 @@ class TaskItem extends StatelessWidget {
   const TaskItem({super.key, required this.task});
   @override
   Widget build(BuildContext context) {
-    return Dismissible(
-      key: Key(task.id),
-      direction: DismissDirection.startToEnd,
-      background: Container(
-        color: Colors.red,
-        alignment: Alignment.centerLeft,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: const Icon(Icons.delete, color: Colors.white),
-      ),
-      onDismissed: (direction) {
-        context.read<TaskCubit>().deleteTask(task.id);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Đã xóa công việc "${task.title}"')),
-        );
-      },
-      child: GestureDetector(
+    return GestureDetector(
+      onLongPress: () => _showEditTaskDialog(context),
+      onDoubleTap: () => _showDescriptionDialog(context),
+      child: CustomTaskCard(
+        task: task,
         onLongPress: () => _showEditTaskDialog(context),
-        onTap: () => _showDescriptionDialog(context),
-        child: CustomTaskCard(
-          task: task,
-          onLongPress: () => _showEditTaskDialog(context),
-          trailing: _buildStatusDropdown(context),
-        ),
+        trailing: _buildStatusDropdown(context),
       ),
     );
   }

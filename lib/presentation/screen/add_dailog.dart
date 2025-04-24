@@ -24,6 +24,7 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: const Text('Thêm công việc mới'),
       content: SingleChildScrollView(
         child: Column(
@@ -67,25 +68,25 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               spacing: 6,
               children: [
                 ColorChoice(
-                  color: '0xFFBBDEFB',
+                  color: '0xFFFFF0F0',
                   selectedColor: selectedColor,
                   onColorSelected:
                       (color) => setState(() => selectedColor = color),
                 ),
                 ColorChoice(
-                  color: '0xFFC8E6C9',
+                  color: '0xFFE8F5E9',
                   selectedColor: selectedColor,
                   onColorSelected:
                       (color) => setState(() => selectedColor = color),
                 ),
                 ColorChoice(
-                  color: '0xFFFFF9C4',
+                  color: '0xFFFFFDE7',
                   selectedColor: selectedColor,
                   onColorSelected:
                       (color) => setState(() => selectedColor = color),
                 ),
                 ColorChoice(
-                  color: '0xFFF8BBD0',
+                  color: '0xFFFFF3E0',
                   selectedColor: selectedColor,
                   onColorSelected:
                       (color) => setState(() => selectedColor = color),
@@ -96,13 +97,14 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
         ),
       ),
       actions: [
-        CustomButton(
-          onPressed: () => Navigator.pop(context),
-          text: 'Hủy',
-          isPrimary: false,
-          width: 80,
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 8, 8),
+          child: CustomButton(
+            text: "Thêm",
+            onPressed: _handleAddTask,
+            width: double.infinity,
+          ),
         ),
-        CustomButton(onPressed: _handleAddTask, text: 'Thêm', width: 80),
       ],
     );
   }

@@ -19,6 +19,7 @@ class ColorChoice extends StatelessWidget {
       child: Container(
         width: 32,
         height: 32,
+        margin: const EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: Color(int.parse(color)),
           shape: BoxShape.circle,
