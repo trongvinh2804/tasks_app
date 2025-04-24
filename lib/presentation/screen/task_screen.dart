@@ -18,6 +18,7 @@ class TaskScreen extends StatelessWidget {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Padding(
             padding: const EdgeInsets.only(left: 8),
@@ -117,36 +118,38 @@ class TaskScreen extends StatelessWidget {
             ],
           ),
         ),
-        body: Container(
-          color: Colors.white70,
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 16,
-                  right: 16,
-                  top: 12,
-                  bottom: 36,
+        body: SafeArea(
+          child: Container(
+            color: Colors.white70,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                    top: 12,
+                    bottom: 36,
+                  ),
+                  child: CustomTextField(
+                    controller: TextEditingController(),
+                    label: 'Tìm kiếm...',
+                    prefixIcon: Icon(Icons.search),
+                    onChanged: (value) {
+                      context.read<TaskCubit>().searchTask(value);
+                    },
+                  ),
                 ),
-                child: CustomTextField(
-                  controller: TextEditingController(),
-                  label: 'Tìm kiếm...',
-                  prefixIcon: Icon(Icons.search),
-                  onChanged: (value) {
-                    context.read<TaskCubit>().searchTask(value);
-                  },
+                const Expanded(
+                  child: TabBarView(
+                    children: [
+                      NewTasksScreen(),
+                      InProgressScreen(),
+                      DoneTasksScreen(),
+                    ],
+                  ),
                 ),
-              ),
-              const Expanded(
-                child: TabBarView(
-                  children: [
-                    NewTasksScreen(),
-                    InProgressScreen(),
-                    DoneTasksScreen(),
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(
