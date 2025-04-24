@@ -15,6 +15,8 @@ class DescriptionDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      backgroundColor: Colors.white,
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
       content: Column(
         mainAxisSize: MainAxisSize.min,

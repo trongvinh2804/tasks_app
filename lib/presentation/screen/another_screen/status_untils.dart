@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entity_task.dart';
+import '../../../domain/entity_task.dart';
 
 class StatusUtils {
   static Color getStatusColor(TaskStatus status) {
@@ -7,9 +7,9 @@ class StatusUtils {
       case TaskStatus.newtask:
         return Colors.black;
       case TaskStatus.inprogress:
-        return Colors.redAccent;
+        return Colors.red;
       case TaskStatus.done:
-        return Colors.indigo;
+        return Colors.blue;
     }
   }
 

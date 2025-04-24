@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/screen/add_dailog.dart';
-import 'package:todo_app/presentation/screen/customTextField.dart';
-import 'package:todo_app/presentation/screen/done_task.dart';
-import 'package:todo_app/presentation/screen/in_progress.dart';
-import 'package:todo_app/presentation/screen/new_task.dart';
+import 'package:todo_app/presentation/screen/dailog/add_dailog.dart';
+import 'package:todo_app/presentation/screen/custom_screen/customTextField.dart';
+import 'package:todo_app/presentation/screen/task_screen/done_task.dart';
+import 'package:todo_app/presentation/screen/task_screen/in_progress.dart';
+import 'package:todo_app/presentation/screen/task_screen/new_task.dart';
 import '../../domain/entity_task.dart';
 import '../cubit/task_bloc.dart';
 
@@ -35,51 +35,81 @@ class TaskScreen extends StatelessWidget {
             tabs: [
               Tab(
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
                     color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.new_releases),
-                      SizedBox(width: 4),
-                      Text("Mới"),
+                      Icon(Icons.new_releases, size: 18),
+                      Align(
+                        child: Text(
+                          "Mới",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Tab(
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
                     color: Colors.orange[100],
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.pending_actions),
-                      SizedBox(width: 4),
-                      Text("Đang"),
+                      Icon(Icons.pending_actions, size: 18),
+                      Align(
+                        child: Text(
+                          "Đang xử lý",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.red,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               Tab(
                 child: Container(
-                  padding: const EdgeInsets.all(10),
+                  padding: EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
                     color: Colors.green[100],
-                    borderRadius: BorderRadius.circular(4),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Row(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Icon(Icons.task_alt),
-                      SizedBox(width: 4),
-                      Text("Xong"),
+                      Icon(Icons.done, size: 18),
+                      Align(
+                        child: Text(
+                          "Hoàn tất",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -96,7 +126,7 @@ class TaskScreen extends StatelessWidget {
                   left: 16,
                   right: 16,
                   top: 12,
-                  bottom: 12,
+                  bottom: 36,
                 ),
                 child: CustomTextField(
                   controller: TextEditingController(),

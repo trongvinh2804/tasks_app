@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../domain/entity_task.dart';
+import '../../../domain/entity_task.dart';
 
 class CustomDropdown extends StatelessWidget {
   final TaskPriority value;
@@ -22,9 +22,9 @@ class CustomDropdown extends StatelessWidget {
         contentPadding: const EdgeInsets.only(),
         filled: true,
         fillColor: Colors.white,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
       ),
-      style: const TextStyle(fontSize: 14, color: Colors.black87),
+      style: const TextStyle(fontSize: 16, color: Colors.black87),
       icon: const Icon(Icons.arrow_drop_down_circle_outlined),
       dropdownColor: Colors.white,
       elevation: 2,
@@ -36,7 +36,6 @@ class CustomDropdown extends StatelessWidget {
               child: Row(
                 children: [
                   _buildPriorityIcon(priority),
-                  const SizedBox(width: 8),
                   Text(_getPriorityText(priority)),
                 ],
               ),
@@ -64,7 +63,7 @@ class CustomDropdown extends StatelessWidget {
         break;
     }
 
-    return Icon(icon, color: color, size: 18);
+    return Icon(icon, color: color, size: 24);
   }
 
   String _getPriorityText(TaskPriority priority) {
