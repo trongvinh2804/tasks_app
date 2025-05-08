@@ -1,4 +1,4 @@
-enum TaskStatus { newtask, inprogress, done } // trạng thái của status
+enum TaskStatus { newTask, inProgress, done } // trạng thái của status
 
 enum TaskPriority { low, medium, high } // định nghĩa mức độ ưu tiên
 
@@ -13,7 +13,7 @@ class Task {
   final DateTime datelineDate;
   final DateTime? editDate;
 
-  // coonstructor
+  // constructor
   Task({
     required this.id,
     required this.title,

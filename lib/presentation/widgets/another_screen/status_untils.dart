@@ -4,9 +4,9 @@ import '../../../domain/entity_task.dart';
 class StatusUtils {
   static Color getStatusColor(TaskStatus status) {
     switch (status) {
-      case TaskStatus.newtask:
+      case TaskStatus.newTask:
         return Colors.black;
-      case TaskStatus.inprogress:
+      case TaskStatus.inProgress:
         return Colors.red;
       case TaskStatus.done:
         return Colors.blue;
@@ -15,9 +15,9 @@ class StatusUtils {
 
   static IconData getStatusIcon(TaskStatus status) {
     switch (status) {
-      case TaskStatus.newtask:
+      case TaskStatus.newTask:
         return Icons.new_releases;
-      case TaskStatus.inprogress:
+      case TaskStatus.inProgress:
         return Icons.pending_actions;
       case TaskStatus.done:
         return Icons.task_alt;
@@ -26,9 +26,9 @@ class StatusUtils {
 
   static String getStatusText(TaskStatus status) {
     switch (status) {
-      case TaskStatus.newtask:
+      case TaskStatus.newTask:
         return "Mới";
-      case TaskStatus.inprogress:
+      case TaskStatus.inProgress:
         return "Đang xử lý";
       case TaskStatus.done:
         return "Hoàn tất";

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:uuid/uuid.dart';
-import '../../data/task_store.dart';
-import '../../domain/entity_task.dart';
-import 'task_state.dart';
+import '../../../data/task_store.dart';
+import '../../../domain/entity_task.dart';
+import 'screen_task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
   final TaskStore taskStore;
@@ -27,18 +27,18 @@ class TaskCubit extends Cubit<TaskState> {
     required String color,
     required DateTime deadlineDate,
   }) async {
-    final newtask = Task(
+    final newTask = Task(
       id: const Uuid().v4(),
       title: title,
       description: description,
-      status: TaskStatus.newtask,
+      status: TaskStatus.newTask,
       priority: priority,
       color: color,
       createDate: DateTime.now(),
       datelineDate: deadlineDate,
     );
 
-    final updated = [...state.tasks, newtask];
+    final updated = [...state.tasks, newTask];
     emit(state.copyWith(tasks: updated));
     await taskStore.saveTasks(updated);
   }
@@ -134,7 +134,7 @@ class TaskCubit extends Cubit<TaskState> {
   }
 
   // set lại cái trạng thái
-  void setfilterStatus(TaskStatus? status) {
+  void setFilterStatus(TaskStatus? status) {
     emit(state.copyWith(filterStatus: status));
   }
 }

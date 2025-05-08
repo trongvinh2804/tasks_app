@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'data/task_store.dart';
-import 'presentation/cubit/task_bloc.dart';
-import 'presentation/screen/task_screen.dart';
+import 'presentation/screen_task/view_model/screen_task_bloc.dart';
+import 'presentation/screen_task/screen_task.dart';
 import 'domain/entity_task.dart';
 
 void main() {

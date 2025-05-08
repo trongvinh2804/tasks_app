@@ -1,25 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/screen/another_screen/color_choose.dart';
-import 'package:todo_app/presentation/screen/custom_screen/customButton.dart';
-import 'package:todo_app/presentation/screen/custom_screen/customTextField.dart';
-import 'package:todo_app/presentation/screen/custom_screen/custom_dropdown.dart';
+import 'package:todo_app/presentation/widgets/another_screen/color_choose.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_Button.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_TextField.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_dropdown.dart';
 import '../../../domain/entity_task.dart';
-import '../../cubit/task_bloc.dart';
+import '../../screen_task/view_model/screen_task_bloc.dart';
 
-class AddTaskDialog extends StatefulWidget {
-  const AddTaskDialog({super.key});
+class EditTaskDialog extends StatefulWidget {
+  final Task task;
+
+  const EditTaskDialog({super.key, required this.task});
 
   @override
-  State<AddTaskDialog> createState() => _AddTaskDialogState();
+  State<EditTaskDialog> createState() => _EditTaskDialogState();
 }
 
-class _AddTaskDialogState extends State<AddTaskDialog> {
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
-  DateTime selectedDate = DateTime.now();
-  String selectedColor = '0xFFBBDEFB';
-  TaskPriority selectedPriority = TaskPriority.medium;
+class _EditTaskDialogState extends State<EditTaskDialog> {
+  late final TextEditingController titleController;
+  late final TextEditingController descriptionController;
+  late DateTime selectedDate;
+  late String selectedColor;
+  late TaskPriority selectedPriority;
+
+  @override
+  void initState() {
+    super.initState();
+    titleController = TextEditingController(text: widget.task.title);
+    descriptionController = TextEditingController(
+      text: widget.task.description,
+    );
+    selectedDate = widget.task.datelineDate;
+    selectedColor = widget.task.color;
+    selectedPriority = widget.task.priority;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,25 +50,21 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'Thêm công việc mới',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-              const SizedBox(height: 16),
               CustomTextField(
                 controller: titleController,
                 label: 'Tiêu đề',
                 autoFocus: true,
                 textCapitalization: TextCapitalization.sentences,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               CustomTextField(
                 controller: descriptionController,
                 label: 'Mô tả',
                 maxLines: 3,
                 textCapitalization: TextCapitalization.sentences,
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
+              const SizedBox(height: 6),
               CustomDropdown(
                 value: selectedPriority,
                 label: 'Độ ưu tiên',
@@ -105,8 +115,8 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
               ),
               const SizedBox(height: 16),
               CustomButton(
-                text: "Thêm",
-                onPressed: _handleAddTask,
+                onPressed: _handleEditTask,
+                text: 'Lưu',
                 width: double.infinity,
               ),
             ],
@@ -116,19 +126,6 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
     );
   }
 
-  void _handleAddTask() {
-    if (titleController.text.isNotEmpty) {
-      context.read<TaskCubit>().addTask(
-        title: titleController.text,
-        description: descriptionController.text,
-        priority: selectedPriority,
-        color: selectedColor,
-        deadlineDate: selectedDate,
-      );
-      Navigator.pop(context);
-    }
-  }
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await context.read<TaskCubit>().selectDate(
       context,
@@ -136,6 +133,20 @@ class _AddTaskDialogState extends State<AddTaskDialog> {
     );
     if (picked != null) {
       setState(() => selectedDate = picked);
+    }
+  }
+
+  void _handleEditTask() {
+    if (titleController.text.isNotEmpty) {
+      context.read<TaskCubit>().updateTask(
+        taskId: widget.task.id,
+        title: titleController.text,
+        description: descriptionController.text,
+        priority: selectedPriority,
+        color: selectedColor,
+        deadlineDate: selectedDate,
+      );
+      Navigator.pop(context);
     }
   }
 

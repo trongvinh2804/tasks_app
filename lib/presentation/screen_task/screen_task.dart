@@ -2,13 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/screen/dailog/add_dailog.dart';
-import 'package:todo_app/presentation/screen/custom_screen/customTextField.dart';
-import 'package:todo_app/presentation/screen/task_screen/done_task.dart';
-import 'package:todo_app/presentation/screen/task_screen/in_progress.dart';
-import 'package:todo_app/presentation/screen/task_screen/new_task.dart';
+import 'package:todo_app/presentation/widgets/dailog/add_dialog.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_TextField.dart';
+import 'package:todo_app/presentation/screen_task/task_screen/screen_task_done.dart';
+import 'package:todo_app/presentation/screen_task/task_screen/screen_task_in_progress.dart';
+import 'package:todo_app/presentation/screen_task/task_screen/screen_task_new.dart';
 import '../../domain/entity_task.dart';
-import '../cubit/task_bloc.dart';
+import 'view_model/screen_task_bloc.dart';
 
 class TaskScreen extends StatelessWidget {
   const TaskScreen({super.key});
@@ -20,27 +20,23 @@ class TaskScreen extends StatelessWidget {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: const Text(
-              "TASK",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
+          centerTitle: true,
+          title: const Text(
+            "TASK",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-
           bottom: TabBar(
             onTap: (index) {
               final status = TaskStatus.values[index];
-              context.read<TaskCubit>().setfilterStatus(status);
+              context.read<TaskCubit>().setFilterStatus(status);
             },
+            indicatorColor: Colors.blue,
+            labelColor: Colors.blue,
+            unselectedLabelColor: Colors.grey,
             tabs: [
               Tab(
                 child: Container(
                   padding: EdgeInsets.only(top: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -53,7 +49,6 @@ class TaskScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -64,10 +59,6 @@ class TaskScreen extends StatelessWidget {
               Tab(
                 child: Container(
                   padding: EdgeInsets.only(top: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.orange[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -80,7 +71,6 @@ class TaskScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.red,
                           ),
                         ),
                       ),
@@ -91,10 +81,6 @@ class TaskScreen extends StatelessWidget {
               Tab(
                 child: Container(
                   padding: EdgeInsets.only(top: 4),
-                  decoration: BoxDecoration(
-                    color: Colors.green[100],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -107,7 +93,6 @@ class TaskScreen extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: Colors.blue,
                           ),
                         ),
                       ),

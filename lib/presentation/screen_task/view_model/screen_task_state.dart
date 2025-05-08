@@ -1,4 +1,4 @@
-import '../../domain/entity_task.dart';
+import '../../../domain/entity_task.dart';
 
 class TaskState {
   final List<Task> tasks;
@@ -9,7 +9,7 @@ class TaskState {
   TaskState({
     required this.tasks,
     this.searchText = '',
-    this.filterStatus = TaskStatus.newtask,
+    this.filterStatus = TaskStatus.newTask,
   });
 
   List<Task> get filteredTasks {

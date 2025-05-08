@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/screen/custom_screen/item.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_item.dart';
 import '../../../domain/entity_task.dart';
-import '../../cubit/task_bloc.dart';
-import '../../cubit/task_state.dart';
+import '../view_model/screen_task_bloc.dart';
+import '../view_model/screen_task_state.dart';
 
 class DoneTasksScreen extends StatelessWidget {
   const DoneTasksScreen({super.key});

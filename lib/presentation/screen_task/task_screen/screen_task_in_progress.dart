@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/screen/custom_screen/item.dart';
+import 'package:todo_app/presentation/widgets/custom_screen/custom_item.dart';
 import '../../../domain/entity_task.dart';
-import '../../cubit/task_bloc.dart';
-import '../../cubit/task_state.dart';
+import '../view_model/screen_task_bloc.dart';
+import '../view_model/screen_task_state.dart';
 
-class NewTasksScreen extends StatelessWidget {
-  const NewTasksScreen({super.key});
+class InProgressScreen extends StatelessWidget {
+  const InProgressScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,11 +14,11 @@ class NewTasksScreen extends StatelessWidget {
       builder: (context, state) {
         final tasks =
             state.filteredTasks
-                .where((task) => task.status == TaskStatus.newtask)
+                .where((task) => task.status == TaskStatus.inProgress)
                 .toList();
 
         if (tasks.isEmpty) {
-          return const Center(child: Text('Không có công việc mới'));
+          return const Center(child: Text('Không có công việc đang xử lý'));
         }
 
         return ListView.separated(
