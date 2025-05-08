@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo_app/presentation/widgets/dailog/add_dialog.dart';
+import 'package:todo_app/presentation/widgets/dialog/add_dialog.dart';
 import 'package:todo_app/presentation/widgets/custom_screen/custom_TextField.dart';
 import 'package:todo_app/presentation/screen_task/task_screen/screen_task_done.dart';
 import 'package:todo_app/presentation/screen_task/task_screen/screen_task_in_progress.dart';
